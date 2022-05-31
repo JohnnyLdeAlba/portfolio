@@ -28,15 +28,14 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const config = {
   palette: {
-    background: '#25253d',
-    darker: '#0b0b18',
+    background: '#0b0b18',
     dark: '#171730',
     light: '#25253d',
-    lighter: '#5c5c80',
+    highlight: '#32324a',
     link: '#8080a6'
   },
 
-  drawerWidth: '270px',
+  drawerWidth: '250px',
   drawerTransition: 200
 };
 
@@ -58,7 +57,6 @@ class t_controller {
   show:Function;
   backdropVisible:boolean;
   backdropShow:Function;
-  drawerColor:string;
   windowWidth:number;
 
   constructor() {
@@ -72,7 +70,6 @@ class t_controller {
     this.show = (visible:boolean) => null;
     this.backdropVisible = false;
     this.backdropShow = (visible:boolean) => null;
-    this.drawerColor = '';
     this.windowWidth = 0;
   }
 }
@@ -106,8 +103,6 @@ const root = ReactDOM.createRoot(
 
 function getCallbackInterval(controller:t_controller) {
 
-  const config = getConfig();
-
   controller.intervalActive = true;
 
   return (() => {
@@ -117,12 +112,10 @@ function getCallbackInterval(controller:t_controller) {
       if (window.innerWidth >= 800) {
         controller.show(true);
         controller.backdropShow(false);
-        controller.drawerColor = config.palette.light;
       }
       else {
         controller.show(false);
         controller.backdropShow(false);
-        controller.drawerColor = config.palette.dark;
       }
 
       controller.windowWidth = window.innerWidth;
@@ -131,29 +124,16 @@ function getCallbackInterval(controller:t_controller) {
   });
 }
 
-function SigilIcon(props: {variant?:string}) {
-
-  let width = props.variant ? '38px' : '48px'; 
+function SigilIcon() {
 
   const Image = styled('img')({
-    width: width
+    width: '48px'
   });
 
-  return (<Image src="sigil.svg" alt="" />);
+  return (<Image src="./sigil.svg" alt="" />);
 }
 
-function SignatureIcon(props: {variant?:string}) {
-
-  let height = props.variant ? '38px' : '38px'; 
-
-  const Image = styled('img')({
-    height: height
-  });
-
-  return (<Image src="signature.svg" alt="" />);
-}
-
-function Navigation(props: {children?:React.ReactNode}) {
+function Navigation(props: {children?: React.ReactNode}) {
 
   const config = getConfig();
   const controller = getController('navigation');
@@ -171,20 +151,11 @@ function Navigation(props: {children?:React.ReactNode}) {
   controller.backdropVisible = backdropVisible;
   controller.backdropShow = backdropShow;
 
-  if (controller.intervalActive == false) {
-    controller.drawerColor = config.palette.light;
+  if (controller.intervalActive == false)
     controller.intervalId = setInterval(
       getCallbackInterval(controller), 250);
-  }
 
   const style = {
-
-    logo: {
-      display: 'flex',
-      width: 'inherit',
-      margin: '8px 16px',
-      '@media (min-width: 800px)': {display: 'none'}
-    },
 
     listIcon: {
       marginRight: '0.25em',
@@ -193,23 +164,19 @@ function Navigation(props: {children?:React.ReactNode}) {
 
     listCategory: {
       margin: '8px 16px',
-      width: 'inherit',
+      width: 'auto',
       borderRadius: '6px',
-      backgroundColor: config.palette.dark,
-      fontSize: '14px',
-      textTransform: 'uppercase',
-      letterSpacing: '0.4em',
+      backgroundColor: config.palette.light,
       color: '#ffffff'
     },
 
     listItem: {
       margin: '8px 16px',
-      width: 'inherit',
+      width: 'auto',
       borderRadius: '6px',
-      fontSize: '16px',
       color: '#ffffff',
       transition: '500ms',
-      ':hover': {backgroundColor: config.palette.lighter}
+      ':hover': {backgroundColor: config.palette.highlight}
     }
   };
 
@@ -225,27 +192,19 @@ function Navigation(props: {children?:React.ReactNode}) {
         open={controller.visible}
         transitionDuration={config.drawerTransition}
         PaperProps={{sx: {
-          marginTop: 0,
           width: config.drawerWidth,
-          borderRight: 0,
-          backgroundColor: controller.drawerColor,
-          '@media (min-width: 800px)': {marginTop: '70px'}
-        }}}>
+          backgroundColor: config.palette.dark
+      }}}>
         <List sx={{flexDirfection: 'column'}}>
-          <ListItem sx={style.logo}><SigilIcon /> &nbsp;&nbsp; <SignatureIcon variant="small" /></ListItem>
+          <ListItem><SigilIcon /></ListItem>
           <ListItem sx={style.listCategory}>
-            Contact
+            <AccountBoxIcon sx={style.listIcon} /> Contact
           </ListItem>
           <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
             <GitHubIcon sx={style.listIcon} /> GitHub
           </ListItem>
           <ListItem component={Link} href="https://www.linkedin.com/in/johnnyldealba" button sx={style.listItem}>
             <LinkedInIcon sx={style.listIcon} /> LinkedIn
-          </ListItem>
-        </List>
-        <List>
-          <ListItem sx={style.listCategory}>
-            Explore
           </ListItem>
 
         </List>
@@ -267,25 +226,16 @@ function Menubar(props: {children?: React.ReactNode}) {
     <AppBar
       position="static"
       sx={{
-        display: 'flex',
-        flexDirection: 'row',
         alignItems: 'flex-start',
         padding: '8px',
-        height: '70px',
-        backgroundColor: config.palette.light,
-        boxShadow: 'none',
+        backgroundColor: config.palette.dark,
+        boxShadow: 'none'
     }}>
-      <IconButton 
-        color="inherit"
-        onClick={drawerOnClick}
-        sx={{
-          display: 'flex',
-          '@media (min-width: 800px)': {display: 'none'} 
+      <IconButton color="inherit" onClick={drawerOnClick} sx={{
+        display: 'inline-flex',
+        '@media (min-width: 800px)': {display: 'none'}
       }}>
-        <MenuIcon sx={{marginTop: '8px', width: '38px'}}/>
-      </IconButton>
-      <IconButton component={Link} href="." color="inherit">
-        <SigilIcon variant="small" /> &nbsp;&nbsp; <SignatureIcon />
+        <MenuIcon />
       </IconButton>
     </AppBar>
   );
@@ -297,7 +247,6 @@ function Layout() {
   const Container = Box;
 
   return (<>
-    <Menubar />
     <Navigation />
     <Container sx={{
       paddingLeft: 0,
@@ -307,7 +256,7 @@ function Layout() {
         paddingLeft: config.drawerWidth
       }
     }}>
-
+      <Menubar />
     </Container>
   </>);
 }
