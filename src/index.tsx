@@ -190,10 +190,10 @@ function Navigation(props: {children?: React.ReactNode}) {
           <ListItem sx={style.listCategory}>
             <AccountBoxIcon sx={style.listIcon} /> Contact
           </ListItem>
-          <ListItem component={Link} href="https://www.linkedin.com/in/johnnyldealba" button sx={style.listItem}>
+          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
             <GitHubIcon sx={style.listIcon} /> GitHub
           </ListItem>
-          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
+          <ListItem component={Link} href="https://www.linkedin.com/in/johnnyldealba" button sx={style.listItem}>
             <LinkedInIcon sx={style.listIcon} /> LinkedIn
           </ListItem>
 
