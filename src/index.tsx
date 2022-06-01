@@ -31,6 +31,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import LanguageIcon from '@mui/icons-material/Language';
+import PublicIcon from '@mui/icons-material/Public';
+
 
 const config = {
   palette: {
@@ -40,10 +44,17 @@ const config = {
     lightPurple: '#25253d',
     lighterPurple: '#5c5c80',
     pink: '#b6669f',
-    link: '#b2a2bb'
+    link: '#b2a2bb',
+
+    miniCard: '#171730',
+    subtitle: '#b6669f'
   },
 
-  drawerWidth: '270px',
+  zIndex: {
+    projectView: 9999
+  },
+
+  drawerWidth: '280px',
   drawerTransition: 200
 };
 
@@ -209,12 +220,10 @@ function Navigation(props: {children?:React.ReactNode}) {
       display: 'flex',
       width: 'inherit',
       margin: '8px 16px',
-      '@media (min-width: 800px)': {display: 'none'}
     },
 
     icon: {
-      marginRight: '0.25em',
-      width: '24px'
+      marginRight: '0.4em',
     },
 
     listCategory: {
@@ -252,11 +261,9 @@ function Navigation(props: {children?:React.ReactNode}) {
         open={controller.visible}
         transitionDuration={config.drawerTransition}
         PaperProps={{sx: {
-          marginTop: 0,
           width: config.drawerWidth,
           borderRight: 0,
           backgroundColor: controller.drawerColor,
-          '@media (min-width: 800px)': {marginTop: '70px'}
         }}}>
         <List sx={{flexDirfection: 'column'}}>
           <ListItem sx={style.logo}><SigilIcon /> &nbsp;&nbsp; <SignatureIcon variant="small" /></ListItem>
@@ -290,6 +297,13 @@ function Menubar(props: {children?: React.ReactNode}) {
     controller.show(!controller.visible);
   };
 
+  const style = {
+    logo: {
+      display: 'block',
+      '@media (min-width: 800px)': {display: 'none'}
+    }
+  };
+
   return (
     <AppBar
       position="static"
@@ -311,7 +325,7 @@ function Menubar(props: {children?: React.ReactNode}) {
       }}>
         <MenuIcon sx={{marginTop: '8px', width: '38px'}}/>
       </IconButton>
-      <IconButton component={Link} href="." color="inherit">
+      <IconButton component={Link} href="." color="inherit" sx={style.logo}>
         <SigilIcon variant="small" /> &nbsp;&nbsp; <SignatureIcon />
       </IconButton>
     </AppBar>
@@ -335,26 +349,26 @@ function Headline() {
 }
 
 function Card(props: {
-  title?:string, 
-  children?: React.ReactNode
+  title?:string,
+  icon?:React.ReactNode,
+  children?:React.ReactNode
 }) {
 
   const title = props.title ? props.title : '';
 
   const config = getConfig();
-  const style = {
-      icon: {
-      marginRight: '0.25em',
-      width: '24px',
-      color: config.palette.pink
-    }
-  };
+
+  const IconWrapper = styled(Box)({
+    marginRight: '0.4em',
+    color: config.palette.pink
+  });
 
   return (
     <Accordion
       defaultExpanded={true}
       disableGutters
       sx={{
+        marginBottom: '16px',
         border: '1px solid #000000',
         background: config.palette.lighterPurple,
         color: config.palette.link
@@ -369,7 +383,7 @@ function Card(props: {
         }}
 
       >
-        <AccountBoxIcon sx={style.icon} />
+        <IconWrapper>{props.icon}</IconWrapper>
         {title}
       </AccordionSummary>
       <AccordionDetails
@@ -387,66 +401,255 @@ function Card(props: {
   );
 }
 
-function Layout() {
+function MiniCard() {
+
+  const config = getConfig();
+
+  const MiniCard = styled(Box)({
+    cursor: 'pointer',
+    overflow: 'hidden',
+    borderRadius: '4px',
+    backgroundColor: config.palette.miniCard
+  });
+
+  const Preview = styled(Box)({
+    overflow: 'hidden'
+  });
+
+  const Image = styled('img')({
+    display: 'block',
+    position: 'relative', 
+    width: '100%',
+    transition: 'transform .4s',
+    ':hover': {
+      transform: 'scale(1.2)'
+    }
+  });
+
+  const Body = styled(Box)({
+    padding: '8px'
+  });
+
+  const Heading = styled('h1')({
+    margin: '8px',
+    fontSize: '18px'
+  });
+
+  const SubTitle = styled('div')({
+    margin: '8px',
+    fontSize: '14px',
+    color: config.palette.subtitle
+  }); 
+
+  const Date = styled('div')({
+    margin: '8px',
+    fontSize: '14px',
+    textAlign: 'right'
+  });
+
+  return (
+    <MiniCard>
+      <Preview>
+        <Image src="profile-photo.jpg" alt="" />
+      </Preview>
+      <Body>
+        <Heading>Test</Heading>
+        <SubTitle>test</SubTitle>
+        <Date>test</Date>
+      </Body>
+    </MiniCard>
+  );
+}
+
+function Gallery(props: {
+  title?:string,
+  children?: React.ReactNode
+}) {
+
+  const title = props.title ? props.title : '';
+
+  const Container = styled(Box)({
+
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  });
+
+  const GalleryItem = styled(Box)({
+    
+    padding: '8px',
+    width: '50%',
+
+    '@media (min-width: 1200px)': {
+      width: '33.33%'
+    }
+  });
+
+  return (
+    <Card
+      icon={<FlashOnIcon />}
+      title={title}>
+      <Container>
+        <GalleryItem><MiniCard /></GalleryItem>
+      </Container>
+    </Card>
+  );
+}
+
+function ColumnLayout(props:{children?:React.ReactNode}) {
+
+  const ColumnLayout = styled(Box)({
+
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 0,
+    padding: '16px',
+    maxWidth: '1200px',
+
+    '@media (min-width: 1200px)': {
+      flexDirection: 'row',
+      margin: '0 auto',
+    }
+  });
+
+  return <ColumnLayout>{props.children}</ColumnLayout>;
+}
+
+function Column(props:{children?:React.ReactNode}) {
+
+  const Column = styled(Box)({
+
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '8px',
+    width: 'inherit',
+
+    '@media (min-width: 1200px)': {
+      padding: '8px',
+      width: '50%'
+    }
+  });
+
+  return <Column>{props.children}</Column>;
+}
+
+function LinkItem(props: {
+  href?:string,
+  icon?:React.ReactNode,
+  children?:React.ReactNode
+}) {
+
+  const LinkItem = styled('a')({
+    display: 'flex',
+    flexDirection: 'row',
+    paddingBottom: '8px'
+  });
+
+  const IconWrapper = styled(Box)({
+    paddingRight: '0.4em'
+  });
+
+  return (
+    <LinkItem>
+      <IconWrapper>{props.icon}</IconWrapper>
+      <Link href={props.href}>{props.children}</Link>
+    </LinkItem>
+  );
+}
+
+function ProjectLinks(props: {websiteURL?:string, gitHubURL?:string}) {
+
+  const websiteURL = props.websiteURL ? props.websiteURL : null;
+  const gitHubURL = props.gitHubURL ? props.gitHubURL : null;
+
+  if (websiteURL == null && gitHubURL == null) return null;
+
+  return (
+    <Card icon={<LanguageIcon />} title="External Links">
+      {websiteURL ? <LinkItem icon={<PublicIcon />} href={websiteURL}>{websiteURL}</LinkItem> : null}
+      {gitHubURL ? <LinkItem icon={<PublicIcon />} href={gitHubURL}>{gitHubURL}</LinkItem> : null}
+    </Card>
+  );
+}
+
+function Project(props:{
+  title?:string,
+  previewImage?:string,
+  children?:React.ReactNode
+}) {
 
   const config = getConfig();
 
   const Container = Box;
-  const InnerContainer = Box;
-  const Column = Box;
+  const Image = styled('img')({
+    width: '100%'
+  });
 
-  const style = {
-    column: {
-      boxSizing: 'border-box',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '8px',
-      width: 'inherit',
+  return (
+      <ColumnLayout>
+        <Column>
+          <Image src={props.previewImage} alt="" />
+        </Column>
+        <Column>
+          <Card icon={<FlashOnIcon />} title={props.title}>
+            {props.children}
+          </Card>
+          <ProjectLinks />
+        </Column>
+      </ColumnLayout>
+  );
+}
 
-      '@media (min-width: 1200px)': {
-        padding: '8px',
-        width: '50%'
-      }
+function Layout() {
+
+  const config = getConfig();
+
+  const Container = styled(Box)({
+
+    padding: 0,
+    '@media (min-width:800px)': {
+      paddingLeft: config.drawerWidth
     }
-  };
+  });
+
+  const RowLayout = styled(Box)({
+
+    padding: '24px',
+    width: 'inherit',
+    maxWidth: '1200px',
+
+    '@media (min-width: 1200px)': {
+      flexDirection: 'row',
+      margin: '0 auto'
+    }
+  });
 
   return (<>
+
     <Menubar />
     <Navigation />
-    <Container sx={{
-      padding: 0,
-
-      '@media (min-width:800px)': {
-        paddingLeft: config.drawerWidth
-      }
-    }}>
-      <InnerContainer
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          margin: 0,
-          padding: '16px',
-          width: 'inherit',
-          maxWidth: '1280px',
-
-          '@media (min-width: 1200px)': {
-            flexDirection: 'row',
-            margin: '0 auto'
-          }
-        }}
-      >
-        <Column sx={style.column}>
+    <Container>
+      <ColumnLayout>
+        <Column>
           <ProfilePhoto /> 
           <Headline />
-         <Card title="About Johnny L. de Alba">
+         <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
 I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
          </Card>
         </Column>
-        <Column sx={style.column}>
-          <Card/>
+        <Column>
+          <Card />
         </Column>
-      </InnerContainer>
+      </ColumnLayout>
+      <RowLayout>
+        <Gallery title="Projects" />
+      </RowLayout>
+
+    <Project title="Project Name" previewImage="profile-photo.jpg" />
     </Container>
+
+
   </>);
 }
 
