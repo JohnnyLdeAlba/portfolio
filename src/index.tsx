@@ -171,7 +171,7 @@ function SignatureIcon(props: {variant?:string}) {
 function ProfilePhoto() {
 
   const Image = styled('img')({
-    margin: '0px auto 32px',
+    margin: '0px auto 8px',
     width: '80%',
     borderRadius: '8px'
   });
@@ -321,16 +321,25 @@ function Menubar(props: {children?: React.ReactNode}) {
 function Headline() {
 
   const Container = Box;
+  const H1 = styled('h1')({
+    fontSize: '24px',
+    fontWeight: 'bold'
+  });
 
   return (
-    <Container sx={{padding: '16px', color: '#ffffff'}}>
-      <p>Johnny L. de Alba</p>
-      <p>Software Developer</p>
+    <Container sx={{padding: '8px', color: '#ffffff'}}>
+      <H1>Johnny L. de Alba</H1>
+      <p>Software Engineer - Vallejo, California</p>
     </Container>
   );
 }
 
-function Card() {
+function Card(props: {
+  title?:string, 
+  children?: React.ReactNode
+}) {
+
+  const title = props.title ? props.title : '';
 
   const config = getConfig();
   const style = {
@@ -361,7 +370,7 @@ function Card() {
 
       >
         <AccountBoxIcon sx={style.icon} />
-        Title
+        {title}
       </AccordionSummary>
       <AccordionDetails
         sx={{
@@ -372,7 +381,7 @@ function Card() {
           color: config.palette.link
         }}
       >
-        Details
+        {props.children}
       </AccordionDetails>
     </Accordion>
   );
@@ -416,7 +425,7 @@ function Layout() {
           display: 'flex',
           flexDirection: 'column',
           margin: 0,
-          padding: '32px',
+          padding: '16px',
           width: 'inherit',
           maxWidth: '1280px',
 
@@ -428,11 +437,13 @@ function Layout() {
       >
         <Column sx={style.column}>
           <ProfilePhoto /> 
-          <Card />
+          <Headline />
+         <Card title="About Johnny L. de Alba">
+I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
+         </Card>
         </Column>
         <Column sx={style.column}>
-          <Headline />
-          <Card />
+          <Card/>
         </Column>
       </InnerContainer>
     </Container>
