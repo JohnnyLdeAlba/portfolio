@@ -19,21 +19,28 @@ import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+
 const config = {
   palette: {
-    background: '#25253d',
-    darker: '#0b0b18',
-    dark: '#171730',
-    light: '#25253d',
-    lighter: '#5c5c80',
-    link: '#8080a6'
+    background: '#171730',
+    darkerPurple: '#0b0b18',
+    darkPurple: '#171730',
+    lightPurple: '#25253d',
+    lighterPurple: '#5c5c80',
+    pink: '#b6669f',
+    link: '#b2a2bb'
   },
 
   drawerWidth: '270px',
@@ -117,12 +124,12 @@ function getCallbackInterval(controller:t_controller) {
       if (window.innerWidth >= 800) {
         controller.show(true);
         controller.backdropShow(false);
-        controller.drawerColor = config.palette.light;
+        controller.drawerColor = config.palette.lightPurple;
       }
       else {
         controller.show(false);
         controller.backdropShow(false);
-        controller.drawerColor = config.palette.dark;
+        controller.drawerColor = config.palette.darkPurple;
       }
 
       controller.windowWidth = window.innerWidth;
@@ -131,26 +138,45 @@ function getCallbackInterval(controller:t_controller) {
   });
 }
 
+function ExpandIcon() {
+  return (
+    <ExpandMoreIcon sx={{color: config.palette.link}} />
+  );
+}
+
 function SigilIcon(props: {variant?:string}) {
 
-  let width = props.variant ? '38px' : '48px'; 
+  const config = getConfig();
+  const width = props.variant ? '38px' : '48px'; 
 
   const Image = styled('img')({
     width: width
   });
 
-  return (<Image src="sigil.svg" alt="" />);
+  return (<Image src="sigil-purple.svg" alt="" />);
 }
 
 function SignatureIcon(props: {variant?:string}) {
 
-  let height = props.variant ? '38px' : '38px'; 
+  const config = getConfig();
+  const height = props.variant ? '38px' : '38px'; 
 
   const Image = styled('img')({
     height: height
   });
 
-  return (<Image src="signature.svg" alt="" />);
+  return (<Image src="signature-purple.svg" alt="" />);
+}
+
+function ProfilePhoto() {
+
+  const Image = styled('img')({
+    margin: '0px auto 32px',
+    width: '80%',
+    borderRadius: '8px'
+  });
+
+  return (<Image src="profile-photo.jpg" alt="" />);
 }
 
 function Navigation(props: {children?:React.ReactNode}) {
@@ -172,7 +198,7 @@ function Navigation(props: {children?:React.ReactNode}) {
   controller.backdropShow = backdropShow;
 
   if (controller.intervalActive == false) {
-    controller.drawerColor = config.palette.light;
+    controller.drawerColor = config.palette.lightPurple;
     controller.intervalId = setInterval(
       getCallbackInterval(controller), 250);
   }
@@ -186,7 +212,7 @@ function Navigation(props: {children?:React.ReactNode}) {
       '@media (min-width: 800px)': {display: 'none'}
     },
 
-    listIcon: {
+    icon: {
       marginRight: '0.25em',
       width: '24px'
     },
@@ -194,12 +220,13 @@ function Navigation(props: {children?:React.ReactNode}) {
     listCategory: {
       margin: '8px 16px',
       width: 'inherit',
+      border: '1px solid #000000',
       borderRadius: '6px',
-      backgroundColor: config.palette.dark,
+      backgroundColor: config.palette.darkPurple,
       fontSize: '14px',
       textTransform: 'uppercase',
       letterSpacing: '0.4em',
-      color: '#ffffff'
+      color: config.palette.link
     },
 
     listItem: {
@@ -207,9 +234,9 @@ function Navigation(props: {children?:React.ReactNode}) {
       width: 'inherit',
       borderRadius: '6px',
       fontSize: '16px',
-      color: '#ffffff',
+      color: config.palette.link,
       transition: '500ms',
-      ':hover': {backgroundColor: config.palette.lighter}
+      ':hover': {backgroundColor: config.palette.lighterPurple}
     }
   };
 
@@ -237,10 +264,10 @@ function Navigation(props: {children?:React.ReactNode}) {
             Contact
           </ListItem>
           <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
-            <GitHubIcon sx={style.listIcon} /> GitHub
+            <GitHubIcon sx={style.icon} /> GitHub
           </ListItem>
           <ListItem component={Link} href="https://www.linkedin.com/in/johnnyldealba" button sx={style.listItem}>
-            <LinkedInIcon sx={style.listIcon} /> LinkedIn
+            <LinkedInIcon sx={style.icon} /> LinkedIn
           </ListItem>
         </List>
         <List>
@@ -272,7 +299,7 @@ function Menubar(props: {children?: React.ReactNode}) {
         alignItems: 'flex-start',
         padding: '8px',
         height: '70px',
-        backgroundColor: config.palette.light,
+        backgroundColor: config.palette.lightPurple,
         boxShadow: 'none',
     }}>
       <IconButton 
@@ -291,23 +318,123 @@ function Menubar(props: {children?: React.ReactNode}) {
   );
 }
 
+function Headline() {
+
+  const Container = Box;
+
+  return (
+    <Container sx={{padding: '16px', color: '#ffffff'}}>
+      <p>Johnny L. de Alba</p>
+      <p>Software Developer</p>
+    </Container>
+  );
+}
+
+function Card() {
+
+  const config = getConfig();
+  const style = {
+      icon: {
+      marginRight: '0.25em',
+      width: '24px',
+      color: config.palette.pink
+    }
+  };
+
+  return (
+    <Accordion
+      defaultExpanded={true}
+      disableGutters
+      sx={{
+        border: '1px solid #000000',
+        background: config.palette.lighterPurple,
+        color: config.palette.link
+    }}>
+      <AccordionSummary
+        expandIcon={<ExpandIcon />}
+        sx={{
+          margin: '1px',
+          borderRadius: '4px',
+          backgroundColor: config.palette.darkPurple,
+          color: config.palette.link
+        }}
+
+      >
+        <AccountBoxIcon sx={style.icon} />
+        Title
+      </AccordionSummary>
+      <AccordionDetails
+        sx={{
+          margin: '0px 1px 1px 1px',
+          paddingTop: '16px',
+          borderRadius: '0px 0px 4px 4px',
+          backgroundColor:config.palette.lightPurple,
+          color: config.palette.link
+        }}
+      >
+        Details
+      </AccordionDetails>
+    </Accordion>
+  );
+}
+
 function Layout() {
 
   const config = getConfig();
+
   const Container = Box;
+  const InnerContainer = Box;
+  const Column = Box;
+
+  const style = {
+    column: {
+      boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '8px',
+      width: 'inherit',
+
+      '@media (min-width: 1200px)': {
+        padding: '8px',
+        width: '50%'
+      }
+    }
+  };
 
   return (<>
     <Menubar />
     <Navigation />
     <Container sx={{
-      paddingLeft: 0,
-      width: '100%',
+      padding: 0,
 
       '@media (min-width:800px)': {
         paddingLeft: config.drawerWidth
       }
     }}>
+      <InnerContainer
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          margin: 0,
+          padding: '32px',
+          width: 'inherit',
+          maxWidth: '1280px',
 
+          '@media (min-width: 1200px)': {
+            flexDirection: 'row',
+            margin: '0 auto'
+          }
+        }}
+      >
+        <Column sx={style.column}>
+          <ProfilePhoto /> 
+          <Card />
+        </Column>
+        <Column sx={style.column}>
+          <Headline />
+          <Card />
+        </Column>
+      </InnerContainer>
     </Container>
   </>);
 }
