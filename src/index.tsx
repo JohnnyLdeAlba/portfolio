@@ -284,19 +284,8 @@ function Navigation(props: {children?:React.ReactNode}) {
           borderRight: 0,
           backgroundColor: controller.drawerColor,
         }}}>
-        <List sx={{flexDirfection: 'column'}}>
-          <ListItem sx={style.logo}><SigilIcon /> &nbsp;&nbsp; <SignatureIcon variant="small" /></ListItem>
-          <ListItem sx={style.listCategory}>
-            Contact
-          </ListItem>
-          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
-            <GitHubIcon sx={style.icon} /> GitHub
-          </ListItem>
-          <ListItem component={Link} href="https://www.linkedin.com/in/johnnyldealba" button sx={style.listItem}>
-            <LinkedInIcon sx={style.icon} /> LinkedIn
-          </ListItem>
-        </List>
         <List>
+          <ListItem sx={style.logo}><SigilIcon /> &nbsp;&nbsp; <SignatureIcon variant="small" /></ListItem>
           <ListItem sx={style.listCategory}>
             Explore
           </ListItem>
@@ -305,6 +294,18 @@ function Navigation(props: {children?:React.ReactNode}) {
           </ListItem>
           <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
             Projects 
+          </ListItem>
+        </List>
+
+        <List sx={{flexDirfection: 'column'}}>
+          <ListItem sx={style.listCategory}>
+            Contact
+          </ListItem>
+          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
+            <GitHubIcon sx={style.icon} /> GitHub
+          </ListItem>
+          <ListItem component={Link} href="https://www.linkedin.com/in/johnnyldealba" button sx={style.listItem}>
+            <LinkedInIcon sx={style.icon} /> LinkedIn
           </ListItem>
         </List>
       </Drawer>
