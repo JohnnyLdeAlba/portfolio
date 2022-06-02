@@ -23,6 +23,11 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
+
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -46,6 +51,7 @@ const config = {
     pink: '#b6669f',
     link: '#b2a2bb',
 
+    icon: '#b6669f',
     miniCard: '#171730',
     subtitle: '#b6669f'
   },
@@ -62,6 +68,7 @@ function getConfig() {return config;}
 
 const theme = createTheme({
   palette: {
+    primary: { main: config.palette.icon },
     background: {
       default: config.palette.background
     }
@@ -238,6 +245,18 @@ function Navigation(props: {children?:React.ReactNode}) {
       color: config.palette.link
     },
 
+    listSubCategory: {
+      margin: '8px 32px',
+      padding: '8px 0',
+      width: 'inherit',
+      border: '1px solid ' + config.palette.link,
+      borderWidth: '0 0 1px 0',
+      fontSize: '12px',
+      textTransform: 'uppercase',
+      letterSpacing: '0.4em',
+      color: config.palette.link
+    },
+
     listItem: {
       margin: '8px 16px',
       width: 'inherit',
@@ -281,7 +300,12 @@ function Navigation(props: {children?:React.ReactNode}) {
           <ListItem sx={style.listCategory}>
             Explore
           </ListItem>
-
+          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
+            Home
+          </ListItem>
+          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
+            Projects 
+          </ListItem>
         </List>
       </Drawer>
   </>);
@@ -344,6 +368,7 @@ function Headline() {
     <Container sx={{padding: '8px', color: '#ffffff'}}>
       <H1>Johnny L. de Alba</H1>
       <p>Software Engineer - Vallejo, California</p>
+      <p>Education: Contra Costa College 2010 - 2011 GPA: 3.5</p>
     </Container>
   );
 }
@@ -630,6 +655,7 @@ function Layout() {
     <Menubar />
     <Navigation />
     <Container>
+
       <ColumnLayout>
         <Column>
           <ProfilePhoto /> 
@@ -639,14 +665,61 @@ I am a freelance developer from Vallejo, California with experience in a variety
          </Card>
         </Column>
         <Column>
-          <Card />
+          <Card title="Skills" />
+          <Card title="Experience">
+            <Stepper orientation="vertical">
+              <Step active expanded sx={{
+
+                 '.MuiStepIcon-text': {fill: config.palette.icon}
+              }}>
+                <StepLabel>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                </StepLabel>
+                <StepContent>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                </StepContent>
+              </Step>
+
+              <Step active expanded sx={{
+
+                 '.MuiStepIcon-text': {fill: config.palette.icon}
+              }}>
+                <StepLabel>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                </StepLabel>
+                <StepContent>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                </StepContent>
+              </Step>
+ 
+              <Step active expanded sx={{
+
+                 '.MuiStepIcon-text': {fill: config.palette.icon}
+              }}>
+                <StepLabel>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                </StepLabel>
+                <StepContent>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                  <Box sx={{color: '#ffffff'}}>Test</Box>
+                </StepContent>
+              </Step>
+
+            </Stepper>
+          </Card>
         </Column>
       </ColumnLayout>
+
       <RowLayout>
         <Gallery title="Projects" />
       </RowLayout>
 
-    <Project title="Project Name" previewImage="profile-photo.jpg" />
+      <Project title="Project Name" previewImage="profile-photo.jpg" />
     </Container>
 
 
