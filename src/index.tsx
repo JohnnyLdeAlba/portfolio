@@ -7,17 +7,12 @@ import {
   Route
 } from 'react-router-dom';
 
-import {styled, createTheme, ThemeProvider} from '@mui/material/styles';
+import {styled, ThemeProvider} from '@mui/material/styles';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import Backdrop from '@mui/material/Backdrop';
-import AppBar from '@mui/material/AppBar';
-import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 
 import Link from '@mui/material/Link';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -40,150 +35,24 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import LanguageIcon from '@mui/icons-material/Language';
 import PublicIcon from '@mui/icons-material/Public';
 
+import getConfig from './config';
+import {getController} from './context';
+import theme from './theme';
 
-const config = {
-  palette: {
-    background: '#171730',
-    darkerPurple: '#0b0b18',
-    darkPurple: '#171730',
-    lightPurple: '#25253d',
-    lighterPurple: '#5c5c80',
-    pink: '#b6669f',
-    link: '#b2a2bb',
+import Layout from './com/Layout';
 
-    icon: '#b6669f',
-    miniCard: '#171730',
-    subtitle: '#b6669f'
-  },
-
-  zIndex: {
-    projectView: 9999
-  },
-
-  drawerWidth: '280px',
-  drawerTransition: 200
-};
-
-function getConfig() {return config;}
-
-const theme = createTheme({
-  palette: {
-    primary: { main: config.palette.icon },
-    background: {
-      default: config.palette.background
-    }
-  }
-});
-
-class t_controller {
-
-  intervalActive:boolean;
-  intervalId:ReturnType<typeof setInterval>;
-  visible:boolean;
-  show:Function;
-  backdropVisible:boolean;
-  backdropShow:Function;
-  drawerColor:string;
-  windowWidth:number;
-
-  constructor() {
-
-    this.intervalActive = false;
-
-    this.intervalId = setInterval(() => {}, 0);
-    clearInterval(this.intervalId);
-
-    this.visible = false;
-    this.show = (visible:boolean) => null;
-    this.backdropVisible = false;
-    this.backdropShow = (visible:boolean) => null;
-    this.drawerColor = '';
-    this.windowWidth = 0;
-  }
-}
-
-class t_context {
-
-  controllers: {[key:string]:t_controller};
-
-  constructor() {
-    this.controllers = {};
-  }
-
-  getController(id:string) {
-    
-    if (typeof this.controllers[id] == 'undefined') {
-      const controller = new t_controller;
-      this.controllers[id] = controller;
-    }
-
-    return this.controllers[id];
-  }
-};
-
-const context = new t_context();
-function getContext() {return context;}
-function getController(id:string) {return context.getController(id);}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-function getCallbackInterval(controller:t_controller) {
-
+function ExpandIcon() {
+  
   const config = getConfig();
 
-  controller.intervalActive = true;
-
-  return (() => {
-
-    if (controller.windowWidth != window.innerWidth) {
-
-      if (window.innerWidth >= 800) {
-        controller.show(true);
-        controller.backdropShow(false);
-        controller.drawerColor = config.palette.lightPurple;
-      }
-      else {
-        controller.show(false);
-        controller.backdropShow(false);
-        controller.drawerColor = config.palette.darkPurple;
-      }
-
-      controller.windowWidth = window.innerWidth;
-    }
-
-  });
-}
-
-function ExpandIcon() {
   return (
     <ExpandMoreIcon sx={{color: config.palette.link}} />
   );
-}
-
-function SigilIcon(props: {variant?:string}) {
-
-  const config = getConfig();
-  const width = props.variant ? '38px' : '48px'; 
-
-  const Image = styled('img')({
-    width: width
-  });
-
-  return (<Image src="sigil-purple.svg" alt="" />);
-}
-
-function SignatureIcon(props: {variant?:string}) {
-
-  const config = getConfig();
-  const height = props.variant ? '38px' : '38px'; 
-
-  const Image = styled('img')({
-    height: height
-  });
-
-  return (<Image src="signature-purple.svg" alt="" />);
 }
 
 function ProfilePhoto() {
@@ -195,166 +64,6 @@ function ProfilePhoto() {
   });
 
   return (<Image src="profile-photo.jpg" alt="" />);
-}
-
-function Navigation(props: {children?:React.ReactNode}) {
-
-  const config = getConfig();
-  const controller = getController('navigation');
-
-  const [backdropVisible, backdropShow] = React.useState(false);
-  const [visible, show] = React.useState(false);
-
-  const backdropOnClick = () => {
-    backdropShow(false);
-    show(false);
-  };
-
-  controller.visible = visible;
-  controller.show = show;
-  controller.backdropVisible = backdropVisible;
-  controller.backdropShow = backdropShow;
-
-  if (controller.intervalActive == false) {
-    controller.drawerColor = config.palette.lightPurple;
-    controller.intervalId = setInterval(
-      getCallbackInterval(controller), 250);
-  }
-
-  const style = {
-
-    logo: {
-      display: 'flex',
-      width: 'inherit',
-      margin: '8px 16px',
-    },
-
-    icon: {
-      marginRight: '0.4em',
-    },
-
-    listCategory: {
-      margin: '8px 16px',
-      width: 'inherit',
-      border: '1px solid #000000',
-      borderRadius: '6px',
-      backgroundColor: config.palette.darkPurple,
-      fontSize: '14px',
-      textTransform: 'uppercase',
-      letterSpacing: '0.4em',
-      color: config.palette.link
-    },
-
-    listSubCategory: {
-      margin: '8px 32px',
-      padding: '8px 0',
-      width: 'inherit',
-      border: '1px solid ' + config.palette.link,
-      borderWidth: '0 0 1px 0',
-      fontSize: '12px',
-      textTransform: 'uppercase',
-      letterSpacing: '0.4em',
-      color: config.palette.link
-    },
-
-    listItem: {
-      margin: '8px 16px',
-      width: 'inherit',
-      borderRadius: '6px',
-      fontSize: '16px',
-      color: config.palette.link,
-      transition: '500ms',
-      ':hover': {backgroundColor: config.palette.lighterPurple}
-    }
-  };
-
-  return (<>
-      <Backdrop
-        open={controller.backdropVisible}
-        transitionDuration={config.drawerTransition}
-        onClick={backdropOnClick}
-      />
-      <Drawer
-        variant="persistent"
-        anchor="left"
-        open={controller.visible}
-        transitionDuration={config.drawerTransition}
-        PaperProps={{sx: {
-          width: config.drawerWidth,
-          borderRight: 0,
-          backgroundColor: controller.drawerColor,
-        }}}>
-        <List>
-          <ListItem sx={style.logo}><SigilIcon /> &nbsp;&nbsp; <SignatureIcon variant="small" /></ListItem>
-          <ListItem sx={style.listCategory}>
-            Explore
-          </ListItem>
-          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
-            Home
-          </ListItem>
-          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
-            Projects 
-          </ListItem>
-        </List>
-
-        <List sx={{flexDirfection: 'column'}}>
-          <ListItem sx={style.listCategory}>
-            Contact
-          </ListItem>
-          <ListItem component={Link} href="https://github.com/JohnnyLdeAlba" button sx={style.listItem}>
-            <GitHubIcon sx={style.icon} /> GitHub
-          </ListItem>
-          <ListItem component={Link} href="https://www.linkedin.com/in/johnnyldealba" button sx={style.listItem}>
-            <LinkedInIcon sx={style.icon} /> LinkedIn
-          </ListItem>
-        </List>
-      </Drawer>
-  </>);
-}
-
-function Menubar(props: {children?: React.ReactNode}) {
-
-  const config = getConfig();
-  const controller = getController('navigation');
-
-  const drawerOnClick = () => {
-    controller.backdropShow(!controller.backdropVisible);
-    controller.show(!controller.visible);
-  };
-
-  const style = {
-    logo: {
-      display: 'block',
-      '@media (min-width: 800px)': {display: 'none'}
-    }
-  };
-
-  return (
-    <AppBar
-      position="static"
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        padding: '8px',
-        height: '70px',
-        backgroundColor: config.palette.lightPurple,
-        boxShadow: 'none',
-    }}>
-      <IconButton 
-        color="inherit"
-        onClick={drawerOnClick}
-        sx={{
-          display: 'flex',
-          '@media (min-width: 800px)': {display: 'none'} 
-      }}>
-        <MenuIcon sx={{marginTop: '8px', width: '38px'}}/>
-      </IconButton>
-      <IconButton component={Link} href="." color="inherit" sx={style.logo}>
-        <SigilIcon variant="small" /> &nbsp;&nbsp; <SignatureIcon />
-      </IconButton>
-    </AppBar>
-  );
 }
 
 function Headline() {
@@ -627,17 +336,7 @@ function Project(props:{
   );
 }
 
-function Layout() {
-
-  const config = getConfig();
-
-  const Container = styled(Box)({
-
-    padding: 0,
-    '@media (min-width:800px)': {
-      paddingLeft: config.drawerWidth
-    }
-  });
+function RowLayout(props:{children:React.ReactNode}) {
 
   const RowLayout = styled(Box)({
 
@@ -651,81 +350,91 @@ function Layout() {
     }
   });
 
-  return (<>
+  return <RowLayout>{props.children}</RowLayout>
+}
 
-    <Menubar />
-    <Navigation />
-    <Container>
-
-      <ColumnLayout>
-        <Column>
-          <ProfilePhoto /> 
-          <Headline />
-         <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
-I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
-         </Card>
-        </Column>
-        <Column>
-          <Card title="Skills" />
-          <Card title="Experience">
-            <Stepper orientation="vertical">
-              <Step active expanded sx={{
-
-                 '.MuiStepIcon-text': {fill: config.palette.icon}
-              }}>
-                <StepLabel>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                </StepLabel>
-                <StepContent>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                </StepContent>
-              </Step>
-
-              <Step active expanded sx={{
-
-                 '.MuiStepIcon-text': {fill: config.palette.icon}
-              }}>
-                <StepLabel>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                </StepLabel>
-                <StepContent>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                </StepContent>
-              </Step>
- 
-              <Step active expanded sx={{
-
-                 '.MuiStepIcon-text': {fill: config.palette.icon}
-              }}>
-                <StepLabel>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                </StepLabel>
-                <StepContent>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                  <Box sx={{color: '#ffffff'}}>Test</Box>
-                </StepContent>
-              </Step>
-
-            </Stepper>
-          </Card>
-        </Column>
-      </ColumnLayout>
-
+function Projects() {
+  return (
+    <Layout>
       <RowLayout>
         <Gallery title="Projects" />
       </RowLayout>
-
-      <Project title="Project Name" previewImage="profile-photo.jpg" />
-    </Container>
-
-
-  </>);
+    </Layout>
+  );
 }
+
+function Index() {
+
+  const config = getConfig();
+
+  return (
+    <Layout>
+      <ColumnLayout>
+      <Column>
+        <ProfilePhoto /> 
+        <Headline />
+       <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
+
+I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
+
+       </Card>
+      </Column>
+      <Column>
+        <Card title="Skills" />
+        <Card title="Experience">
+          <Stepper orientation="vertical">
+            <Step active expanded sx={{
+
+               '.MuiStepIcon-text': {fill: config.palette.icon}
+            }}>
+              <StepLabel>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+              </StepLabel>
+              <StepContent>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+              </StepContent>
+            </Step>
+
+            <Step active expanded sx={{
+
+               '.MuiStepIcon-text': {fill: config.palette.icon}
+            }}>
+              <StepLabel>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+              </StepLabel>
+              <StepContent>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+              </StepContent>
+            </Step>
+ 
+            <Step active expanded sx={{
+
+               '.MuiStepIcon-text': {fill: config.palette.icon}
+            }}>
+              <StepLabel>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+              </StepLabel>
+              <StepContent>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+                <Box sx={{color: '#ffffff'}}>Test</Box>
+              </StepContent>
+            </Step>
+
+          </Stepper>
+
+        </Card>
+      </Column>
+    </ColumnLayout>
+      <Project title="Project Name" previewImage="profile-photo.jpg" />
+  </Layout>
+  );
+}
+
 
 root.render(
   <React.StrictMode>
@@ -734,7 +443,8 @@ root.render(
 
   <BrowserRouter>
     <Routes>
-      <Route path={'/'} element={<Layout />} />
+      <Route path={'/'} element={<Index />} />
+      <Route path={'Projects'} element={<Projects />} />
     </Routes>
   </BrowserRouter>
 
