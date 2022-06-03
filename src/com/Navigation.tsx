@@ -19,7 +19,7 @@ import ListItem from '@mui/material/ListItem';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
-
+import HomeIcon from '@mui/icons-material/Home';
 import getConfig from '../config';
 import {t_controller, getController} from '../context';
 
@@ -178,7 +178,9 @@ export function Navigation(props: {children?:React.ReactNode}) {
           <SignatureIcon variant="small" />
         </Logo>
         <Category>Explore</Category>
-        <MenuItem href=".">Home</MenuItem>
+        <MenuItem href=".">
+          <IconWrapper><HomeIcon /></IconWrapper> Home
+        </MenuItem>
         <MenuItem href="portfolio">
           <IconWrapper><FlashOnIcon /></IconWrapper> Portfolio
         </MenuItem>

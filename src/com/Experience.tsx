@@ -3,7 +3,6 @@ import React from 'react';
 import {styled} from '@mui/material/styles';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -11,11 +10,6 @@ import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import FlashOnIcon from '@mui/icons-material/FlashOn';
-import LanguageIcon from '@mui/icons-material/Language';
 import PublicIcon from '@mui/icons-material/Public';
 
 import getConfig from '../config';
@@ -63,6 +57,32 @@ export function createJob(
   return job;
 }
 
+export function createProject(
+  title:string,
+  date:string,
+  collaborative:boolean,
+  details:Array<string>,
+  websiteURL:string | null,
+  gitHubURL:string | null
+) {
+
+  const job = new t_job();
+
+  job.title = title;
+  job.location = date;
+
+  job.date = collaborative ? "Collaborative" : "Non-Collaborative";
+  job.date+= " Project";
+
+  job.details = details;
+  job.websiteURL = websiteURL;
+  job.gitHubURL = gitHubURL;
+
+  return job;
+}
+
+
+
 function Details(props:{list:Array<string>}) {
 
   const List = styled('ul')({
@@ -89,99 +109,7 @@ function IconWrapper(props:{children:React.ReactNode}) {
   return <IconWrapper>{props.children}</IconWrapper>;
 }
 
-/*
-export function WorkHistory(props:{
-  list:Array<t_job>,
-  children?:React.ReactNode
-}) {
-
-  const config = getConfig();
-  const style = {
-
-    job: {
-      '.MuiStepIcon-text': {
-        fill: config.palette.icon
-      }
-    },
-
-    content: {color: config.palette.text}
-  };
-
-  const Company = styled(Box)({
-    fontSize: '18px',
-    color: config.palette.text
-  });
-
-  const SubHeader = styled(Box)({
-    display: 'flex',
-    flexDirection: 'row',
-    color: config.palette.link
-  });
-
-  const Date = styled(Box)({
-    flex: 1
-  });
-
-  const Location = Box;
-
-  const Website = styled(Box)({
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'right',
-    fontSize: '14px',
-    color: config.palette.link
-  });
-
-  const WebsiteURL = styled('a')({
-    display: 'block',
-    marginTop: '2px',
-
-    ':link': {
-      color: config.palette.link,
-      textDecoration: 'none'
-    },
-
-    ':visited': {
-      color: config.palette.link,
-      textDecoration: 'none'
-    }
-  });
-
-  return (
-    <Stepper orientation="vertical">
-
-    { props.list.map((item, index) => {    
-
-        return (
-          <Step key={index} active expanded sx={style.job}>
-            <StepLabel>
-              <Company>{item.title} - {item.company}</Company>
-              <SubHeader>
-                <Date>{item.date}</Date>
-                <Location>{item.location}</Location>
-              </SubHeader>
-            </StepLabel>
-            <StepContent sx={style.content}>
-              <Details list={item.details} />
-
-              { item.websiteURL ?  
-                <Website>
-                  <IconWrapper><PublicIcon /></IconWrapper>
-                  <WebsiteURL href={item.websiteURL}>Website</WebsiteURL>
-                </Website> : null
-              }
-
-          </StepContent>
-        </Step>
-      );
-    }) }
-
-    </Stepper>
-  );
-}
-*/
-
-function Links(props:{websiteURL:string | null, gitHubURL:string | null}) {
+function ExternalLinks(props:{websiteURL:string | null, gitHubURL:string | null}) {
 
   const config = getConfig();
 
@@ -191,13 +119,16 @@ function Links(props:{websiteURL:string | null, gitHubURL:string | null}) {
   if (websiteURL == null && gitHubURL == null)
     return null;
 
-  const Website = styled(Box)({
+  const ExternalLinks = styled(Box)({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'right',
+    marginTop: '16px',
     fontSize: '14px',
     color: config.palette.link
   });
+
+  const marginRight = gitHubURL ? '1.2em' : 0;
 
   const GitHubURL = styled('a')({
     display: 'block',
@@ -214,14 +145,12 @@ function Links(props:{websiteURL:string | null, gitHubURL:string | null}) {
     }
   });
 
-  const marginRight = gitHubURL ? '1.2em' : 0;
-
   const WebsiteURL = styled(GitHubURL)({
     marginRight: marginRight
   });
 
   return (
-    <Website>
+    <ExternalLinks>
 
       { websiteURL ? 
         <><IconWrapper><PublicIcon /></IconWrapper>
@@ -233,7 +162,7 @@ function Links(props:{websiteURL:string | null, gitHubURL:string | null}) {
         <GitHubURL href={gitHubURL}>GitHub</GitHubURL></> : null
       }
 
-    </Website>
+    </ExternalLinks>
   );
 }
 
@@ -265,10 +194,7 @@ export function WorkHistory(props:{
     color: config.palette.link
   });
 
-  const Date = styled(Box)({
-    flex: 1
-  });
-
+  const Date = styled(Box)({flex: 1});
   const Location = Box;
 
   return (
@@ -287,7 +213,7 @@ export function WorkHistory(props:{
             </StepLabel>
             <StepContent sx={style.content}>
               <Details list={item.details} />
-              <Links websiteURL={item.websiteURL} gitHubURL={item.gitHubURL} />
+              <ExternalLinks websiteURL={item.websiteURL} gitHubURL={item.gitHubURL} />
           </StepContent>
         </Step>
       );
