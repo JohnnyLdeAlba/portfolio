@@ -23,6 +23,9 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
 
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -204,14 +207,12 @@ function Gallery(props: {
   const title = props.title ? props.title : '';
 
   const Container = styled(Box)({
-
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
   });
 
   const GalleryItem = styled(Box)({
-    
     padding: '8px',
     width: '50%',
 
@@ -221,6 +222,13 @@ function Gallery(props: {
   });
 
   return (
+      <Container>
+        <GalleryItem><MiniCard /></GalleryItem>
+      </Container>
+  );
+
+/*
+  return (
     <Card
       icon={<FlashOnIcon />}
       title={title}>
@@ -229,6 +237,8 @@ function Gallery(props: {
       </Container>
     </Card>
   );
+*/
+
 }
 
 function ColumnLayout(props:{children?:React.ReactNode}) {
@@ -353,13 +363,120 @@ function RowLayout(props:{children:React.ReactNode}) {
   return <RowLayout>{props.children}</RowLayout>
 }
 
-function Projects() {
+function Portfolio() {
   return (
     <Layout>
       <RowLayout>
-        <Gallery title="Projects" />
+        <Gallery title="Portfolio" />
       </RowLayout>
     </Layout>
+  );
+}
+
+class t_job {
+
+  title:string;
+  company:string;
+  date:string;
+  location:string;
+  experience:Array<string>;
+
+  constructor() {
+
+    this.title = '';
+    this.company = '';
+    this.date = '';
+    this.location = '';
+    this.experience = [];
+  }
+}
+
+function createJob(
+  title:string,
+  company:string,
+  date:string,
+  location:string,
+  experience:Array<string>
+) {
+
+  const job = new t_job();
+
+  job.title = title;
+  job.company = company;
+  job.date = date;
+  job.location = location;
+  job.experience = experience;
+
+  return job;
+}
+
+function Experience(props:{list:Array<string>}) {
+
+  const List = styled('ul')({
+    margin: '0 16px',
+    padding: 0,
+    fontSize: '14px'
+  });
+
+  return (
+    <List>
+      { props.list.map((item, index) => {
+        return (<li>{item}</li>);
+      }) }
+    </List>
+  );
+}
+
+function WorkHistory(props:{
+  list:Array<t_job>,
+  children?:React.ReactNode
+}) {
+
+  const config = getConfig();
+
+  const style = {
+
+    job: {
+      '.MuiStepIcon-text': {fill: config.palette.icon}
+    },
+
+    content: {color: config.palette.text}
+  };
+
+  const Company = styled(Box)({
+    fontSize: '18px',
+    color: config.palette.text
+  });
+
+  const Date = styled(Box)({
+    color: config.palette.link
+  });
+
+  const Location = styled('span')({
+    float: 'right'
+  });
+
+  return (
+    <Stepper orientation="vertical">
+
+    { props.list.map((item, index) => {    
+      return (
+        <Step key={index} active expanded sx={style.job}>
+          <StepLabel>
+            <Company>{item.title} - {item.company}</Company>
+            <Date>
+              {item.date}
+              <Location>{item.location}</Location>
+            </Date>
+          </StepLabel>
+          <StepContent sx={style.content}>
+            <Experience list={item.experience} />
+          </StepContent>
+        </Step>
+      );
+    }) }
+
+    </Stepper>
   );
 }
 
@@ -367,71 +484,52 @@ function Index() {
 
   const config = getConfig();
 
+  const list = new Array();
+
+  list.push(createJob(
+    "Software Developer",
+    "Playchemy",
+    "February 2022 to Present, 4 Months",
+    "Remote, California",
+    [
+      "History",
+      "History"
+    ]  
+  ));
+
+  list.push(createJob(
+    "Electrical Assembler",
+    "CM Controls",
+    "March 2012 to February 2022,  10 Years",
+    "Benicia, California",
+    [
+      "...",
+      "..."
+    ]
+  ));
+
   return (
     <Layout>
       <ColumnLayout>
-      <Column>
-        <ProfilePhoto /> 
-        <Headline />
-       <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
+        <Column>
+          <ProfilePhoto /> 
+          <Headline />
+         <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
 
 I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
 
-       </Card>
-      </Column>
-      <Column>
-        <Card title="Skills" />
-        <Card title="Experience">
-          <Stepper orientation="vertical">
-            <Step active expanded sx={{
-
-               '.MuiStepIcon-text': {fill: config.palette.icon}
-            }}>
-              <StepLabel>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-              </StepLabel>
-              <StepContent>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-              </StepContent>
-            </Step>
-
-            <Step active expanded sx={{
-
-               '.MuiStepIcon-text': {fill: config.palette.icon}
-            }}>
-              <StepLabel>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-              </StepLabel>
-              <StepContent>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-              </StepContent>
-            </Step>
- 
-            <Step active expanded sx={{
-
-               '.MuiStepIcon-text': {fill: config.palette.icon}
-            }}>
-              <StepLabel>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-              </StepLabel>
-              <StepContent>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-                <Box sx={{color: '#ffffff'}}>Test</Box>
-              </StepContent>
-            </Step>
-
-          </Stepper>
-
-        </Card>
-      </Column>
-    </ColumnLayout>
-      <Project title="Project Name" previewImage="profile-photo.jpg" />
-  </Layout>
+         </Card>
+        </Column>
+        <Column>
+          <Card title="Skills" />
+          <Card title="Projects" />
+          <Card title="Experience">
+            <WorkHistory list={list} />
+          </Card>
+        </Column>
+      </ColumnLayout>
+        <Project title="Project Name" previewImage="profile-photo.jpg" />
+    </Layout>
   );
 }
 
@@ -444,7 +542,7 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path={'/'} element={<Index />} />
-      <Route path={'Projects'} element={<Projects />} />
+      <Route path={'portfolio'} element={<Portfolio />} />
     </Routes>
   </BrowserRouter>
 

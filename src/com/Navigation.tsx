@@ -179,8 +179,8 @@ export function Navigation(props: {children?:React.ReactNode}) {
         </Logo>
         <Category>Explore</Category>
         <MenuItem href=".">Home</MenuItem>
-        <MenuItem href="projects">
-          <IconWrapper><FlashOnIcon /></IconWrapper> Projects
+        <MenuItem href="portfolio">
+          <IconWrapper><FlashOnIcon /></IconWrapper> Portfolio
         </MenuItem>
       </List>
       <List sx={{flexDirfection: 'column'}}>

@@ -6,10 +6,12 @@ const config = {
     lightPurple: '#25253d',
     lighterPurple: '#5c5c80',
     pink: '#b6669f',
+
+    text: '#ffffff',
     link: '#b2a2bb',
 
     icon: '#b6669f',
-    miniCard: '#171730',
+    miniCard: '#25253d',
     subtitle: '#b6669f'
   },
 
