@@ -448,13 +448,19 @@ function WorkHistory(props:{
     color: config.palette.text
   });
 
-  const Date = styled(Box)({
+  const SubHeader = styled(Box)({
+    display: 'flex',
+    flexDirection: 'row',
     color: config.palette.link
   });
 
-  const Location = styled('span')({
-    float: 'right'
+  const Date = styled(Box)({
+    flex: 1
   });
+
+  const Location = Box;
+
+  // Details
 
   return (
     <Stepper orientation="vertical">
@@ -464,10 +470,10 @@ function WorkHistory(props:{
         <Step key={index} active expanded sx={style.job}>
           <StepLabel>
             <Company>{item.title} - {item.company}</Company>
-            <Date>
-              {item.date}
+            <SubHeader>
+              <Date>{item.date}</Date>
               <Location>{item.location}</Location>
-            </Date>
+            </SubHeader>
           </StepLabel>
           <StepContent sx={style.content}>
             <Experience list={item.experience} />
