@@ -42,6 +42,7 @@ import getConfig from './config';
 import {getController} from './context';
 import theme from './theme';
 
+import {WorkHistory, createJob} from './com/Experience';
 import Layout from './com/Layout';
 
 
@@ -93,7 +94,6 @@ function Card(props: {
 }) {
 
   const title = props.title ? props.title : '';
-
   const config = getConfig();
 
   const IconWrapper = styled(Box)({
@@ -313,7 +313,7 @@ function ProjectLinks(props: {websiteURL?:string, gitHubURL?:string}) {
   return (
     <Card icon={<LanguageIcon />} title="External Links">
       {websiteURL ? <LinkItem icon={<PublicIcon />} href={websiteURL}>{websiteURL}</LinkItem> : null}
-      {gitHubURL ? <LinkItem icon={<PublicIcon />} href={gitHubURL}>{gitHubURL}</LinkItem> : null}
+      {gitHubURL ? <LinkItem icon={<GitHubIcon />} href={gitHubURL}>{gitHubURL}</LinkItem> : null}
     </Card>
   );
 }
@@ -373,119 +373,6 @@ function Portfolio() {
   );
 }
 
-class t_job {
-
-  title:string;
-  company:string;
-  date:string;
-  location:string;
-  experience:Array<string>;
-
-  constructor() {
-
-    this.title = '';
-    this.company = '';
-    this.date = '';
-    this.location = '';
-    this.experience = [];
-  }
-}
-
-function createJob(
-  title:string,
-  company:string,
-  date:string,
-  location:string,
-  experience:Array<string>
-) {
-
-  const job = new t_job();
-
-  job.title = title;
-  job.company = company;
-  job.date = date;
-  job.location = location;
-  job.experience = experience;
-
-  return job;
-}
-
-function Experience(props:{list:Array<string>}) {
-
-  const List = styled('ul')({
-    margin: '0 16px',
-    padding: 0,
-    fontSize: '14px'
-  });
-
-  return (
-    <List>
-      { props.list.map((item, index) => {
-        return (<li>{item}</li>);
-      }) }
-    </List>
-  );
-}
-
-function WorkHistory(props:{
-  list:Array<t_job>,
-  children?:React.ReactNode
-}) {
-
-  const config = getConfig();
-
-  const style = {
-
-    job: {
-      '.MuiStepIcon-text': {fill: config.palette.icon}
-    },
-
-    content: {color: config.palette.text}
-  };
-
-  const Company = styled(Box)({
-    fontSize: '18px',
-    color: config.palette.text
-  });
-
-  const SubHeader = styled(Box)({
-    display: 'flex',
-    flexDirection: 'row',
-    color: config.palette.link
-  });
-
-  const Date = styled(Box)({
-    flex: 1
-  });
-
-  const Location = Box;
-
-  // Details
-
-  return (
-    <Stepper orientation="vertical">
-
-    { props.list.map((item, index) => {    
-      return (
-        <Step key={index} active expanded sx={style.job}>
-          <StepLabel>
-            <Company>{item.title} - {item.company}</Company>
-            <SubHeader>
-              <Date>{item.date}</Date>
-              <Location>{item.location}</Location>
-            </SubHeader>
-          </StepLabel>
-          <StepContent sx={style.content}>
-            <Experience list={item.experience} />
-          </StepContent>
-        </Step>
-      );
-    }) }
-
-    </Stepper>
-  );
-}
-
 function Index() {
 
   const config = getConfig();
@@ -500,7 +387,8 @@ function Index() {
     [
       "History",
       "History"
-    ]  
+    ],
+    "https://playchemy.com"  
   ));
 
   list.push(createJob(
@@ -511,7 +399,8 @@ function Index() {
     [
       "...",
       "..."
-    ]
+    ],
+    "http://cmcontrols.com"  
   ));
 
   return (
@@ -522,13 +411,15 @@ function Index() {
           <Headline />
          <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
 
-I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
+I am a freelance developer from Vallejo, California with details in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
 
          </Card>
         </Column>
         <Column>
           <Card title="Skills" />
-          <Card title="Projects" />
+          <Card title="Projects">
+            <WorkHistory list={list} />
+          </Card>
           <Card title="Experience">
             <WorkHistory list={list} />
           </Card>
@@ -538,7 +429,6 @@ I am a freelance developer from Vallejo, California with experience in a variety
     </Layout>
   );
 }
-
 
 root.render(
   <React.StrictMode>
