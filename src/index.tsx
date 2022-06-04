@@ -474,7 +474,7 @@ function Index() {
         "Built a full stack solution for an exisiting mobile app that communicates with the Ethereum blockchain.",
         "Designed a revamped UI with a responsive layout that can be viewed on both mobile and desktop.",
         "Implemented a backend solution that caches Ethereum data to a local PostGres database.",
-        "Created an API from the ground up that provides tools for developers to decode data returned from an Ethereum smart contract." 
+        "Created an API from the ground up that provides tools for developers to decode data returned from an Ethereum smart contract.",
         "Technology Used: JavaScript, ReactJS, NodeJS, PostGres, web3.js",
       ],
       "https://myipc.io",  
