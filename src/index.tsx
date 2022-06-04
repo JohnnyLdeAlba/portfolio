@@ -475,6 +475,7 @@ function Index() {
         "Designed a revamped UI with a responsive layout that can be viewed on both mobile and desktop.",
         "Implemented a backend solution that caches Ethereum data to a local PostGres database.",
         "Created an API from the ground up that provides tools for developers to decode data returned from an Ethereum smart contract." 
+        "Technology Used: JavaScript, ReactJS, NodeJS, PostGres, web3.js",
       ],
       "https://myipc.io",  
       "https://github.com/JohnnyLdeAlba/myipc.io"
@@ -591,7 +592,7 @@ I am a freelance developer from Vallejo, California with details in a variety of
         <Column>
           <Card icon={<BarChartIcon />} title="Featured Projects">
             <WorkHistory list={projectHistory} />
-            <Link href=""><LinkCaption>View My Portfolio</LinkCaption><DoubleArrowIcon /></Link>
+            <Link href="portfolio"><LinkCaption>View My Portfolio</LinkCaption><DoubleArrowIcon /></Link>
           </Card>
         </Column>
       </ColumnLayout>
