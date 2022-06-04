@@ -81,7 +81,25 @@ export function createProject(
   return job;
 }
 
+class t_item {
+  caption:string;
+  content:string;
 
+  constructor() {
+    this.caption = '';
+    this.content = ''
+  }
+}
+
+export function createItem(
+  caption:string,
+  content:string
+){
+  const item = new t_item();
+  item.caption = caption;
+  item.content = content;
+  return item;
+}
 
 function Details(props:{list:Array<string>}) {
 
@@ -228,3 +246,39 @@ export function WorkHistory(props:{
     </Stepper>
   );
 }
+
+export function Skills(props:{list:Array<t_item>}) {
+
+  const config = getConfig();
+
+  const ColumnLayout = styled(Box)({
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  });
+
+  const Column = styled(Box)({
+    margin: '8px 0',
+    width: '50%',
+    color: config.palette.text
+  });
+
+  const Caption = styled(Box)({
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: config.palette.link
+  });
+
+  return (
+    <ColumnLayout>
+      { props.list.map((item, index) => {
+
+        return (<>
+          <Column><Caption>{item.caption}</Caption></Column>
+          <Column>{item.content}</Column>
+        </>);
+      }) }
+    </ColumnLayout>
+  );
+}
+
