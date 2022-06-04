@@ -21,8 +21,8 @@ class t_job {
   date:string;
   location:string;
   details:Array<string>;
-  websiteURL:string | null
-  gitHubURL:string | null
+  websiteURL:string | null;
+  gitHubURL:string | null;
 
   constructor() {
 
@@ -52,7 +52,7 @@ export function createJob(
   job.date = date;
   job.location = location;
   job.details = details;
-  job.websiteURL = websiteURL;
+  job.websiteURL = websiteURL
 
   return job;
 }
@@ -183,10 +183,13 @@ export function WorkHistory(props:{
     content: {color: config.palette.text}
   };
 
-  const Company = styled(Box)({
+  const Company = styled('a')({
+    display: 'block',
     fontSize: '18px',
+    textDecoration: 'none',
     color: config.palette.text
   });
+
 
   const SubHeader = styled(Box)({
     display: 'flex',
@@ -205,7 +208,10 @@ export function WorkHistory(props:{
         return (
           <Step key={index} active expanded sx={style.job}>
             <StepLabel>
-              <Company>{item.title}</Company>
+              { item.websiteURL ? 
+                  <Company href={item.websiteURL}>{item.title}</Company> :
+                  <Company>{item.title}</Company>
+              }
               <SubHeader>
                 <Date>{item.date}</Date>
                 <Location>{item.location}</Location>

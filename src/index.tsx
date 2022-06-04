@@ -40,6 +40,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import WorkIcon from '@mui/icons-material/Work';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 
 import getConfig from './config';
 import {getController} from './context';
@@ -75,17 +76,30 @@ function ProfilePhoto() {
 
 function Headline() {
 
+  const config = getConfig();
+
   const Container = Box;
   const H1 = styled('h1')({
+    margin: '4px 0',
     fontSize: '24px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: config.palette.link
   });
+
+   const H2 = styled('h2')({
+    margin: '4px 0',
+    fontSize: '14px',
+    fontWeight: 'normal',
+    color: config.palette.text
+  });
+
+ 
 
   return (
     <Container sx={{padding: '8px', color: '#ffffff'}}>
       <H1>Johnny L. de Alba</H1>
-      <p>Software Engineer - Vallejo, California</p>
-      <p>Education: Contra Costa College 2010 - 2011 GPA: 3.5</p>
+      <H2>Software Engineer - Vallejo, California</H2>
+      <H2>Education: Contra Costa College 2010 - 2011 &nbsp; GPA: 3.5</H2>
     </Container>
   );
 }
@@ -229,19 +243,6 @@ function Gallery(props: {
         <GalleryItem><MiniCard /></GalleryItem>
       </Container>
   );
-
-/*
-  return (
-    <Card
-      icon={<FlashOnIcon />}
-      title={title}>
-      <Container>
-        <GalleryItem><MiniCard /></GalleryItem>
-      </Container>
-    </Card>
-  );
-*/
-
 }
 
 function ColumnLayout(props:{children?:React.ReactNode}) {
@@ -250,7 +251,6 @@ function ColumnLayout(props:{children?:React.ReactNode}) {
 
     display: 'flex',
     flexDirection: 'column',
-    margin: 0,
     padding: '16px',
     maxWidth: '1200px',
 
@@ -376,6 +376,61 @@ function Portfolio() {
   );
 }
 
+class t_item {
+  caption:string;
+  content:string;
+
+  constructor() {
+    this.caption = '';
+    this.content = ''
+  }
+}
+
+function createItem(
+  caption:string,
+  content:string
+){
+  const item = new t_item();
+  item.caption = caption;
+  item.content = content;
+  return item;
+}
+
+function Skills(props:{list:Array<t_item>}) {
+
+  const config = getConfig();
+
+  const ColumnLayout = styled(Box)({
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  });
+
+  const Column = styled(Box)({
+    margin: '8px 0',
+    width: '50%',
+    color: config.palette.text
+  });
+
+  const Caption = styled(Box)({
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: config.palette.link
+  });
+
+  return (
+    <ColumnLayout>
+      { props.list.map((item, index) => {
+
+        return (<>
+          <Column><Caption>{item.caption}</Caption></Column>
+          <Column>{item.content}</Column>
+        </>);
+      }) }
+    </ColumnLayout>
+  );
+}
+
 function Index() {
 
   const config = getConfig();
@@ -422,7 +477,7 @@ function Index() {
         "Created an API from the ground up that provides tools for developers to decode data returned from an Ethereum smart contract." 
       ],
       "https://myipc.io",  
-      "https://github.com/JohnnyLdeAlba/myipc.io"  
+      "https://github.com/JohnnyLdeAlba/myipc.io"
     ),
 
     createProject(
@@ -451,7 +506,7 @@ function Index() {
         "Technology Used: HTML, CSS, PHP, MySQL/MariaDB"
       ],
       "https://enigmav.nexusultima.com",
-      "https://github.com/JohnnyLdeAlba/enigmav"  
+      "https://github.com/JohnnyLdeAlba/enigmav" 
     ),
 
     createProject(
@@ -463,11 +518,59 @@ function Index() {
         "Technology Used: HTML, CSS, Perl 5"
       ],
       "https://enigma4.nexusultima.com",
-      "https://github.com/JohnnyLdeAlba/enigma4"  
+      "https://github.com/JohnnyLdeAlba/enigma4" 
     )
   ];
 
+  const skillList = [
+    createItem(
+      "Programming Languages",
+      "C, C++, C#, HTML5, CSS3, Java, JavaScript, TypeScript, Perl, PHP, Python"
+    ),
 
+    createItem(
+      "Assembly Languages",
+      "6502, 68000, z80, x86"
+    ),
+
+    createItem(
+      "Front-End Technologies",
+      "HTML5, CSS3, ReactJS, Material UI"
+    ),
+
+    createItem(
+      "Backend-End Technologies",
+      "NodeJS, MariaDB, PostGres"
+    ),
+
+    createItem(
+      "Tools",
+      "VirtualBox, Debian Linux, Apache2, Vim, Visual Studio, Git, Radare2"
+    ),
+  ];
+
+  const Link = styled('a')({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'right',
+    marginTop: '20px',
+    fontSize: '16px',
+    color: config.palette.link,
+
+    ':link': {
+      color: config.palette.link,
+      textDecoration: 'none'
+    },
+
+    ':visited': {
+      color: config.palette.link,
+      textDecoration: 'none'
+     }
+  });
+
+  const LinkCaption = styled(Box)({
+    marginRight: '0.4px'
+  });
 
   return (
     <Layout>
@@ -475,23 +578,29 @@ function Index() {
         <Column>
           <ProfilePhoto /> 
           <Headline />
-         <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
+          <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
 
 I am a freelance developer from Vallejo, California with details in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
 
-         </Card>
-         <Card icon={<HandymanIcon />} title="Skills" />
+          </Card>
+          <Card icon={<HandymanIcon />} title="Technical Skills">
+            <Skills list={skillList} />
+          </Card>
+
         </Column>
         <Column>
           <Card icon={<BarChartIcon />} title="Featured Projects">
             <WorkHistory list={projectHistory} />
-          </Card>
-          <Card icon={<WorkIcon />} title="Experience">
-            <WorkHistory list={list} />
+            <Link href=""><LinkCaption>View My Portfolio</LinkCaption><DoubleArrowIcon /></Link>
           </Card>
         </Column>
       </ColumnLayout>
-        <Project title="Project Name" previewImage="profile-photo.jpg" />
+      <RowLayout>
+        <Card icon={<WorkIcon />} title="Experience">
+          <WorkHistory list={list} />
+        </Card>
+      </RowLayout>
+      { /* <Project title="Project Name" previewImage="profile-photo.jpg" /> */ }
     </Layout>
   );
 }
