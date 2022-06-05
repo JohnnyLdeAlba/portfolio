@@ -430,7 +430,7 @@ function Index() {
           <Headline />
           <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
 
-I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
+I am a software developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
 
           </Card>
           <Card icon={<HandymanIcon />} title="Technical Skills">
