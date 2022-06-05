@@ -496,13 +496,13 @@ const portfolioList = [
     "Ecco Password Generator",
     "A password generator for the Sega Genesis and Sega CD versions of Ecco the Dolphin.",
     "HTML5, CSS, Responsive UI" ,
-    "ecco-password-website.png"),
+    "ecco-password-ui.png"),
 
   portfolioItem(
     "Ecco 2 Password Generator",
     "A password generator for the Sega Genesis and Sega CD versions of Ecco 2: The Tides of Time.",
     "HTML5, CSS, Responsive UI" ,
-    "ecco2-password-website.png"),
+    "ecco2-password-ui.png"),
 
   portfolioItem(
     "Agartha HTML5",
