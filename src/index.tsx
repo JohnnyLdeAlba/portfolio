@@ -46,7 +46,7 @@ import getConfig from './config';
 import {getController} from './context';
 import theme from './theme';
 
-import {WorkHistory, Skills} from './com/Experience';
+import {WorkHistory, Skills, portfolioItem, t_job} from './com/Experience';
 import Layout from './com/Layout';
 import {workHistory, projectHistory, skillList} from './database';
 
@@ -154,8 +154,15 @@ function Card(props: {
   );
 }
 
-function MiniCard() {
+function MiniCard(
+  props:{
+    title:string,
+    subtitle:string| null,
+    date:string,
+    previewImage:string | null
+}) {
 
+  const previewImage = props.previewImage ? props.previewImage : '';
   const config = getConfig();
 
   const MiniCard = styled(Box)({
@@ -180,46 +187,51 @@ function MiniCard() {
   });
 
   const Body = styled(Box)({
-    padding: '8px'
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    height: '100%'
   });
 
-  const Heading = styled('h1')({
-    margin: '8px',
-    fontSize: '18px'
+  const Heading = styled(Box)({
+    display: 'block',
+    margin: '16px 16px 0 16px',
+    padding: 0,
+    fontSize: '18px', 
+    fontWeight: 'bold',
+    color: config.palette.text
   });
 
-  const SubTitle = styled('div')({
-    margin: '8px',
+  const SubTitle = styled(Box)({
+    margin: '4px 16px',
+    height: '9em',
     fontSize: '14px',
-    color: config.palette.subtitle
+    color: config.palette.link
   }); 
 
-  const Date = styled('div')({
-    margin: '8px',
+  const Date = styled(Box)({
+    margin: '4px 16px',
     fontSize: '14px',
-    textAlign: 'right'
+    color: config.palette.subtitle
   });
 
   return (
     <MiniCard>
-      <Preview>
-        <Image src="profile-photo.jpg" alt="" />
-      </Preview>
       <Body>
-        <Heading>Test</Heading>
-        <SubTitle>test</SubTitle>
-        <Date>test</Date>
+        <Preview>
+          <Image src={previewImage} alt="" />
+        </Preview>
+        <Heading>{props.title}</Heading>
+        <Date>{props.date}</Date>
+        <SubTitle>{props.subtitle}</SubTitle>
       </Body>
     </MiniCard>
   );
 }
 
-function Gallery(props: {
-  title?:string,
-  children?: React.ReactNode
+function Portfolio(props: {
+  list:Array<t_job>
 }) {
-
-  const title = props.title ? props.title : '';
 
   const Container = styled(Box)({
     display: 'flex',
@@ -229,7 +241,11 @@ function Gallery(props: {
 
   const GalleryItem = styled(Box)({
     padding: '8px',
-    width: '50%',
+    width: '100%',
+
+    '@media (min-width: 600px)': {
+      width: '50%'
+    },
 
     '@media (min-width: 1200px)': {
       width: '33.33%'
@@ -237,9 +253,24 @@ function Gallery(props: {
   });
 
   return (
-      <Container>
-        <GalleryItem><MiniCard /></GalleryItem>
-      </Container>
+      <Layout>
+        <RowLayout>
+          <Container>
+            { props.list.map((item, index) => {
+                return (
+                  <GalleryItem>
+                    <MiniCard
+                      title={item.title}
+                      subtitle={item.description}
+                      date={item.date}
+                      previewImage={item.previewImage} />
+                  </GalleryItem>
+                );
+              })
+            }
+          </Container>
+        </RowLayout>
+      </Layout>
   );
 }
 
@@ -364,16 +395,6 @@ function RowLayout(props:{children:React.ReactNode}) {
   return <RowLayout>{props.children}</RowLayout>
 }
 
-function Portfolio() {
-  return (
-    <Layout>
-      <RowLayout>
-        <Gallery title="Portfolio" />
-      </RowLayout>
-    </Layout>
-  );
-}
-
 function Index() {
 
   const config = getConfig();
@@ -409,7 +430,7 @@ function Index() {
           <Headline />
           <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
 
-I am a freelance developer from Vallejo, California with exerp in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
+I am a freelance developer from Vallejo, California with experience in a variety of programming disiplines. I'm a Full Stack developer, a UX/UI designer, web3 developer, a game designer, a Database devleoper, and I can reverse engineer software from a variety of different platforms.
 
           </Card>
           <Card icon={<HandymanIcon />} title="Technical Skills">
@@ -434,6 +455,63 @@ I am a freelance developer from Vallejo, California with exerp in a variety of p
   );
 }
 
+const portfolioList = [
+  portfolioItem(
+    "MyIpc.io",
+    "A web based dApp that decodes playable video game characters from the Ethereum blockchain and stores them on a local database.",
+    "ReactJS, NodeJS, PostGres" ,
+    "myipc-website.png"),
+
+  portfolioItem(
+    "Ecco the Dolphin Online",
+    "A website built in React and Typescript that has an image gallery and articles.",
+    "TypeScript, ReactJS, NodeJS" ,
+    "ecco-online-website.png"),
+
+  portfolioItem(
+    "EccoLib",
+    "A graphics extraction library for the Ecco the Dolphin series.",
+    "C, C++, Direct2D" ,
+    "eccolib-stage.png"),
+
+  portfolioItem(
+    "EnigmaV Social Network",
+    "A prototype social network created in 2013 that uses PHP5 and MySQL.",
+    "PHP, MySQL/MariaDB" ,
+    "enigmav-website.png"),
+
+  portfolioItem(
+    "Enigma 4 Wiki",
+    "A perl based wiki made in 2008 that uses the file system as database storage.",
+    "Perl 5" ,
+    "enigma4-website.png"),
+
+  portfolioItem(
+    "Ecco Text Generator",
+    "A text generator that creates animated GIFs in the style of messages found in the classic video game Ecco the Dolphin.",
+    "HTML5, CSS, Responsive UI" ,
+    "ecco-text-website.png"),
+
+  portfolioItem(
+    "Ecco Password Generator",
+    "A password generator for the Sega Genesis and Sega CD versions of Ecco the Dolphin.",
+    "HTML5, CSS, Responsive UI" ,
+    "ecco-password-website.png"),
+
+  portfolioItem(
+    "Ecco 2 Password Generator",
+    "A password generator for the Sega Genesis and Sega CD versions of Ecco 2: The Tides of Time.",
+    "HTML5, CSS, Responsive UI" ,
+    "ecco2-password-website.png"),
+
+  portfolioItem(
+    "Agartha HTML5",
+    "A demo made in 2010. You are Kuros, a Dolphin who lives in a world that was once populated by an ancient civilization. Speak to other dolphins, and orcas, collect all the coins and fight the boss at the end of the stage.",
+    "HTML5" ,
+    "agartha-html5-game.png"),
+
+];
+
 root.render(
   <React.StrictMode>
   <ThemeProvider theme={theme}>
@@ -442,7 +520,7 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path={'/'} element={<Index />} />
-      <Route path={'portfolio'} element={<Portfolio />} />
+      <Route path={'portfolio'} element={<Portfolio list={portfolioList} />} />
     </Routes>
   </BrowserRouter>
 

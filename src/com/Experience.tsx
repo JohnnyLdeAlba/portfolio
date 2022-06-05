@@ -14,13 +14,15 @@ import PublicIcon from '@mui/icons-material/Public';
 
 import getConfig from '../config';
 
-class t_job {
+export class t_job {
 
   title:string;
   company:string;
   date:string;
   location:string;
+  description:string | null;
   details:Array<string>;
+  previewImage:string | null;
   websiteURL:string | null;
   gitHubURL:string | null;
 
@@ -30,7 +32,9 @@ class t_job {
     this.company = '';
     this.date = '';
     this.location = '';
+    this.description = '';
     this.details = [];
+    this.previewImage = null;
     this.websiteURL = null;
     this.gitHubURL = null;
   }
@@ -63,9 +67,8 @@ export function createProject(
   collaborative:boolean,
   details:Array<string>,
   websiteURL:string | null,
-  gitHubURL:string | null
+  gitHubURL:string | null,
 ) {
-
   const job = new t_job();
 
   job.title = title;
@@ -75,8 +78,26 @@ export function createProject(
   job.date+= " Project";
 
   job.details = details;
+  job.previewImage = websiteURL;
+  
   job.websiteURL = websiteURL;
   job.gitHubURL = gitHubURL;
+
+  return job;
+}
+
+export function portfolioItem(
+  title:string,
+  description: string | null,
+  date:string,
+  previewImage: string | null
+) {
+  const job = new t_job();
+
+  job.title = title;
+  job.description = description ? description : null;
+  job.date = date;
+  job.previewImage = previewImage;
 
   return job;
 }
