@@ -299,7 +299,7 @@ function Index() {
           <ProfilePhoto /> 
           <Headline />
           <Card icon={<AccountBoxIcon />} title="About Johnny L. de Alba">
-I am a freelance developer from Vallejo, California with experience in a variety of programming disciplines. I'm a full stack developer, a web3 developer, a UI designer, a game designer, a Database developer, and I have reverse engineered software from a variety of different platforms.
+I am a software developer from Vallejo, California with experience in a variety of programming disciplines. I'm a full stack developer, a web3 developer, a UI designer, a game designer, a Database developer, and I have reverse engineered software from a variety of different platforms.
 
 There is nothing I can't do! I love development and learning new technologies!
           </Card>
