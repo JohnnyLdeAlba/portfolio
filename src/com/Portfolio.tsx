@@ -207,6 +207,7 @@ export function Portfolio(props: {
                 return (
                   <GalleryItem>
                     <MiniCard
+                      key={index}
                       title={item.title}
                       subtitle={item.description}
                       date={item.date}

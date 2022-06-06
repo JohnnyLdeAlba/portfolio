@@ -138,7 +138,7 @@ function Details(props:{list:Array<string>}) {
   return (
     <List>
       { props.list.map((item, index) => {
-          return (<li>{item}</li>);
+          return (<li key={index}>{item}</li>);
       }) }
     </List>
   );
@@ -299,10 +299,10 @@ export function Skills(props:{list:Array<t_item>}) {
     <ColumnLayout>
       { props.list.map((item, index) => {
 
-        return (<>
+        return (<Box key={index}>
           <Column><Caption>{item.caption}</Caption></Column>
           <Column>{item.content}</Column>
-        </>);
+        </Box>);
       }) }
     </ColumnLayout>
   );

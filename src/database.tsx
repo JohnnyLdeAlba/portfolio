@@ -150,6 +150,14 @@ export const portfolioList = [
     "eccolib-stage.png"),
 
   portfolioItem(
+    "Enigma 6 Content Manager",
+    "An unfinished concept from 2014 for a content manager that was written in Python and used a MySQL database. This was for a video game website called Gaming Rebellion that had a team of writers who contributed articles to the website.",
+    "Python, MySQL" ,
+    "https://nexusultima.com/enigma6",
+    "https://github.com/JohnnyLdeAlba/enigma6",
+    "enigma6-website.png"),
+
+  portfolioItem(
     "EnigmaV Social Network",
     "A prototype social network created in 2013 that uses PHP5 and MySQL.",
     "PHP, MySQL/MariaDB" ,
@@ -194,8 +202,7 @@ export const portfolioList = [
     "A demo made in 2010. You are Kuros, a Dolphin who lives in a world that was once populated by an ancient civilization. Speak to other dolphins, and orcas, collect all the coins and fight the boss at the end of the stage.",
     "HTML5" ,
     "https://nexusultima.com/agartha.html5",
-    "",
+    "https://github.com/JohnnyLdeAlba/agartha-html5",
     "agartha-html5-game.png"),
-
 ];
 
