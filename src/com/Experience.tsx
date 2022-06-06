@@ -90,6 +90,8 @@ export function portfolioItem(
   title:string,
   description: string | null,
   date:string,
+  websiteURL:string | null,
+  gitHubURL:string | null,
   previewImage: string | null
 ) {
   const job = new t_job();
@@ -97,6 +99,9 @@ export function portfolioItem(
   job.title = title;
   job.description = description ? description : null;
   job.date = date;
+
+  job.websiteURL = websiteURL;
+  job.gitHubURL = gitHubURL;
   job.previewImage = previewImage;
 
   return job;
